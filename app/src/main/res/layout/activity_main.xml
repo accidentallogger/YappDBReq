@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/openingscrnbckg"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/btnLoginLog"
+        android:layout_width="144dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="557dp"
+        android:layout_marginEnd="59dp"
+        android:layout_marginBottom="124dp"
+        android:backgroundTint="#673AB7"
+        android:text="Login"
+        android:textColorLink="#D32F2F"
+        android:textFontWeight="500"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnRegisterLog"
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="559dp"
+        android:layout_marginEnd="208dp"
+        android:layout_marginBottom="124dp"
+        android:background="@drawable/transparent_button_outline"
+        android:backgroundTint="#FFFFFF"
+        android:outlineProvider="paddedBounds"
+        android:text="Register"
+        android:textColor="#FCFFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textFontWeight="500"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/btngoogleLog"
+        android:layout_width="293dp"
+        android:layout_height="wrap_content"
+
+
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="622dp"
+        android:layout_marginEnd="59dp"
+        android:layout_marginBottom="55dp"
+        android:background="@drawable/transparent_button_outline"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:onClick="HandleClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Google Icon -->
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="21dp"
+            android:src="@drawable/ic_google"
+            android:textAlignment="textStart" />
+
+        <!-- Space between the icon and the text -->
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="wrap_content" />
+
+        <!-- Login with Google Text -->
+        <TextView
+            android:id="@+id/edtLoginwithgoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login with Google"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

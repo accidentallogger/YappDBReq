@@ -1,0 +1,12 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Transparent background -->
+    <solid android:color="@android:color/transparent" />
+
+    <!-- Outline with reduced visibility (more transparent) -->
+    <stroke
+        android:width="2dp"
+        android:color="#80673AB7" /> <!-- 50% transparent purple color -->
+
+    <!-- Rounded corners (optional) -->
+    <corners android:radius="150dp" />
+</shape>
