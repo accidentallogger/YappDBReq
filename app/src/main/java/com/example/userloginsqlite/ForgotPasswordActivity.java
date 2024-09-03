@@ -1,15 +1,13 @@
 package com.example.userloginsqlite;
 
-
-
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -17,11 +15,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     Button btnSubmitForgot;
     TextView txtForgotPasswordMessage;
     dbConnect db;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_forgot_password);
 
         ptForgotName = findViewById(R.id.ptForgotName);
@@ -30,6 +28,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         txtForgotPasswordMessage = findViewById(R.id.txtForgotPasswordMessage);
 
         db = new dbConnect(this);
+        handler = new Handler();
 
         btnSubmitForgot.setOnClickListener(view -> {
             String name = ptForgotName.getText().toString();
@@ -38,19 +37,27 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             if (name.isEmpty() || email.isEmpty()) {
                 txtForgotPasswordMessage.setText("All fields are required");
                 txtForgotPasswordMessage.setVisibility(View.VISIBLE);
-            } else if (!db.checkEmailExists(email)) {
-                txtForgotPasswordMessage.setText("Email not found");
+                hideMessageAfterDelay(2000); // Hide after 2 seconds
+            } else if (!db.checkEmailExists(email) || !db.checkNameExists(name)) {
+                txtForgotPasswordMessage.setText("Email or Name not found");
                 txtForgotPasswordMessage.setVisibility(View.VISIBLE);
+                hideMessageAfterDelay(2000); // Hide after 2 seconds
             } else {
                 // Logic to retrieve and display the password
-                String password = db.getPasswordByEmail(email);
+                String password = db.getPasswordByNameAndEmail(name, email);
+
                 if (password != null) {
                     Toast.makeText(ForgotPasswordActivity.this, "Password: " + password, Toast.LENGTH_LONG).show();
                 } else {
                     txtForgotPasswordMessage.setText("Unable to retrieve password");
                     txtForgotPasswordMessage.setVisibility(View.VISIBLE);
+                    hideMessageAfterDelay(2000); // Hide after 2 seconds
                 }
             }
         });
+    }
+
+    private void hideMessageAfterDelay(long delayMillis) {
+        handler.postDelayed(() -> txtForgotPasswordMessage.setVisibility(View.GONE), delayMillis);
     }
 }

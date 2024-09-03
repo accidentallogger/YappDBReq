@@ -5,7 +5,7 @@
     <!-- Outline with reduced visibility (more transparent) -->
     <stroke
         android:width="2dp"
-        android:color="#809F9BA6" /> <!-- 50% transparent purple color -->
+        android:color="#809365E3" /> <!-- 50% transparent purple color -->
 
     <!-- Rounded corners (optional) -->
     <corners android:radius="2dp" />

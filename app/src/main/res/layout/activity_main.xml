@@ -10,87 +10,59 @@
 
     <Button
         android:id="@+id/btnLoginLog"
-        android:layout_width="144dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="208dp"
-        android:layout_marginTop="557dp"
-        android:layout_marginEnd="59dp"
-        android:layout_marginBottom="124dp"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="115dp"
+        android:layout_marginEnd="95dp"
+        android:background="@drawable/buttondarkblueround"
         android:backgroundTint="#673AB7"
+        android:fontFamily="@font/tinos_reg"
         android:text="Login"
+        android:textColor="@drawable/button_selector_color"
         android:textColorLink="#D32F2F"
         android:textFontWeight="500"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/btnRegisterLog" />
 
     <Button
         android:id="@+id/btnRegisterLog"
-        android:layout_width="144dp"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="359dp"
 
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="559dp"
-        android:layout_marginEnd="208dp"
-        android:layout_marginBottom="124dp"
         android:background="@drawable/transparent_button_outline"
-        android:backgroundTint="#FFFFFF"
+
+        android:fontFamily="@font/tinos_bold"
         android:outlineProvider="paddedBounds"
+
+
         android:text="Register"
-        android:textColor="#FCFFFFFF"
-        android:textColorLink="#FFFFFF"
+        android:textColor="@drawable/button_selector_color"
         android:textFontWeight="500"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtgreeting" />
+
+    <TextView
+        android:id="@+id/txtgreeting"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="80dp"
+        android:fontFamily="@font/tinos_reg"
+        android:text=""
+        android:textColor="#FFFFFF"
+        android:textSize="52sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/btngoogleLog"
-        android:layout_width="293dp"
-        android:layout_height="wrap_content"
-
-
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="622dp"
-        android:layout_marginEnd="59dp"
-        android:layout_marginBottom="55dp"
-        android:background="@drawable/transparent_button_outline"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:onClick="HandleClick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!-- Google Icon -->
-        <ImageView
-            android:layout_width="26dp"
-            android:layout_height="21dp"
-            android:src="@drawable/ic_google"
-            android:textAlignment="textStart" />
-
-        <!-- Space between the icon and the text -->
-        <Space
-            android:layout_width="8dp"
-            android:layout_height="wrap_content" />
-
-        <!-- Login with Google Text -->
-        <TextView
-            android:id="@+id/edtLoginwithgoogle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login with Google"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

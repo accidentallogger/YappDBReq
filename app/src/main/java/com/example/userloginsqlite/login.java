@@ -1,6 +1,8 @@
 package com.example.userloginsqlite;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class login extends AppCompatActivity {
@@ -23,18 +24,15 @@ public class login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
         txtlogin = findViewById(R.id.txtlogin);
         txtenteremail = findViewById(R.id.txtenteremail);
         txtenterpassword = findViewById(R.id.txtenterpassword);
         txtforgotpassword = findViewById(R.id.txtforgotpassword);
-        txtloginwithgoogle = findViewById(R.id.txtloginwithgoogle);
         ptenteremail = findViewById(R.id.ptenteremail);
         ptenterpassword = findViewById(R.id.ptenterpassword);
         btnlogin = findViewById(R.id.btnlogin);
-        btnloginwithgoogle = findViewById(R.id.btnloginwithgoogle);
 
         db = new dbConnect(this);
 
@@ -44,14 +42,27 @@ public class login extends AppCompatActivity {
         });
 
         btnlogin.setOnClickListener(view -> {
-            String email = ptenteremail.getText().toString();
-            String password = ptenterpassword.getText().toString();
+            String email = ptenteremail.getText().toString().trim();
+            String password = ptenterpassword.getText().toString().trim();
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(login.this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             if (db.checkEmailExists(email)) {
                 String storedPassword = db.getPasswordByEmail(email);
                 if (storedPassword != null && storedPassword.equals(password)) {
+                    // Store email in SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.apply();
+
                     // Login successful
                     Toast.makeText(login.this, "Login successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(login.this, Home_Page.class);
+                    startActivity(intent);
                 } else {
                     // Invalid password
                     Toast.makeText(login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();

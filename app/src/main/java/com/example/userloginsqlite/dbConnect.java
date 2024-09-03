@@ -5,19 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import androidx.annotation.Nullable;
 
 public class dbConnect extends SQLiteOpenHelper {
-    private static String dbname = "findusermanager";
-    private static int dbVersion = 1;
-    private static String dbtable = "users";
-    private static String ID = "id";
-    private static String firstname = "firstname";
-    private static String lastname = "lastname";
-    private static String emailaddress = "emailaddress";
-    private static String password = "password";
-    private static String confirmpassword = "confirmpassword";
+    private static final String dbname = "findusermanager";
+    private static final int dbVersion = 1;
+    private static final String dbtable = "users";
+    private static final String ID = "id";
+    private static final String name = "name";
+    private static final String emailaddress = "emailaddress";
+    private static final String password = "password";
+    private static final String gender = "gender";
+    private static final String age = "age";
+    private static final String bio = "bio";
 
     public dbConnect(@Nullable Context context) {
         super(context, dbname, null, dbVersion);
@@ -25,18 +25,19 @@ public class dbConnect extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String query = "CREATE TABLE " + dbtable + " (" +
+        String createUserTable = "CREATE TABLE " + dbtable + " (" +
                 ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                firstname + " TEXT, " +
-                lastname + " TEXT, " +
-                emailaddress + " TEXT, " +
+                name + " TEXT, " +
+                emailaddress + " TEXT UNIQUE, " +
                 password + " TEXT, " +
-                confirmpassword + " TEXT)";
-        sqLiteDatabase.execSQL(query);
+                gender + " TEXT, " +
+                age + " INTEGER, " +
+                bio + " TEXT)";
+        sqLiteDatabase.execSQL(createUserTable);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + dbtable);
         onCreate(sqLiteDatabase);
     }
@@ -44,27 +45,16 @@ public class dbConnect extends SQLiteOpenHelper {
     public void addUser(users user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(firstname, user.getFirstname());
-        values.put(lastname, user.getLastname());
-        values.put(emailaddress, user.getEmailaddress());
+        values.put(name, user.getName());
+        values.put(emailaddress, user.getEmail());
         values.put(password, user.getPassword());
-        values.put(confirmpassword, user.getConfirmpassword());
+        values.put(gender, user.getGender());
+        values.put(age, user.getAge());
+        values.put(bio, user.getBio());
         db.insert(dbtable, null, values);
-        db.close(); // Close the database after insertion
+        db.close();
     }
 
-    public boolean checkUser(String email, String pass) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {ID};
-        String selection = emailaddress + " = ? AND " + password + " = ?";
-        String[] selectionArgs = {email, pass};
-        Cursor cursor = db.query(dbtable, columns, selection, selectionArgs, null, null, null);
-        int cursorCount = cursor.getCount();
-        cursor.close();
-        db.close(); // Close the database after querying
-
-        return cursorCount > 0;
-    }
     public boolean checkEmailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + dbtable + " WHERE " + emailaddress + " = ?";
@@ -74,25 +64,32 @@ public class dbConnect extends SQLiteOpenHelper {
         db.close();
         return exists;
     }
+
+    public boolean checkNameExists(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + dbtable + " WHERE " + this.name + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{name});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return exists;
+    }
+
     public String getPasswordByEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String passwordColumn = "password"; // Ensure this matches the column name in your database
-
-        // Query to select password for the given email
-        String query = "SELECT " + passwordColumn + " FROM " + dbtable + " WHERE " + emailaddress + " = ?";
+        String query = "SELECT " + password + " FROM " + dbtable + " WHERE " + emailaddress + " = ?";
         Cursor cursor = null;
-        String password = null;
+        String passwordResult = null;
 
         try {
             cursor = db.rawQuery(query, new String[]{email});
             if (cursor != null && cursor.moveToFirst()) {
-                int passwordIndex = cursor.getColumnIndex(passwordColumn);
-                if (passwordIndex != -1) {
-                    password = cursor.getString(passwordIndex);
+                int passwordIndex = cursor.getColumnIndex(password);
+                if (passwordIndex >= 0) {
+                    passwordResult = cursor.getString(passwordIndex);
                 }
             }
         } catch (Exception e) {
-            // Handle exceptions here, e.g., log the error
             e.printStackTrace();
         } finally {
             if (cursor != null) {
@@ -100,8 +97,165 @@ public class dbConnect extends SQLiteOpenHelper {
             }
             db.close();
         }
-        return password;
+        return passwordResult;
     }
+
+    public String getPasswordByNameAndEmail(String name, String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + password + " FROM " + dbtable + " WHERE " + this.name + " = ? AND " + emailaddress + " = ?";
+        Cursor cursor = null;
+        String passwordResult = null;
+
+        try {
+            cursor = db.rawQuery(query, new String[]{name, email});
+            if (cursor != null && cursor.moveToFirst()) {
+                int passwordIndex = cursor.getColumnIndex(password);
+                if (passwordIndex >= 0) {
+                    passwordResult = cursor.getString(passwordIndex);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return passwordResult;
+    }
+
+    public int getUserIdByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + ID + " FROM " + dbtable + " WHERE " + emailaddress + " = ?";
+        Cursor cursor = null;
+        int userIdResult = -1;
+
+        try {
+            cursor = db.rawQuery(query, new String[]{email});
+            if (cursor != null && cursor.moveToFirst()) {
+                int idIndex = cursor.getColumnIndex(ID);
+                if (idIndex >= 0) {
+                    userIdResult = cursor.getInt(idIndex);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return userIdResult;
+    }
+
+    public void updateUser(users user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(name, user.getName());
+        values.put(emailaddress, user.getEmail());
+        values.put(gender, user.getGender());
+        values.put(age, user.getAge());
+        values.put(bio, user.getBio());
+
+        db.update(dbtable, values, ID + " = ?", new String[]{String.valueOf(user.getId())});
+        db.close();
+    }
+
+    public users getUserById(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        users user = null;
+
+        String query = "SELECT * FROM " + dbtable + " WHERE " + ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(this.name));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(emailaddress));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow(this.password));
+                String gender = cursor.getString(cursor.getColumnIndexOrThrow(this.gender));
+                int age = cursor.getInt(cursor.getColumnIndexOrThrow(this.age));
+                String bio = cursor.getString(cursor.getColumnIndexOrThrow(this.bio));
+
+                user = new users(id, name, email, password, gender, age, bio);
+            }
+            cursor.close();
+        }
+
+        db.close();
+        return user;
+    }
+
+    public users getUserByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        users user = null;
+
+        String query = "SELECT * FROM " + dbtable + " WHERE " + emailaddress + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(this.name));
+                String userEmail = cursor.getString(cursor.getColumnIndexOrThrow(emailaddress));
+                String gender = cursor.getString(cursor.getColumnIndexOrThrow(this.gender));
+                int age = cursor.getInt(cursor.getColumnIndexOrThrow(this.age));
+                String bio = cursor.getString(cursor.getColumnIndexOrThrow(this.bio));
+
+                user = new users(name, userEmail, gender, age, bio);
+            }
+            cursor.close();
+        }
+
+        db.close();
+        return user;
+    }
+
+
+    public String getGenderByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String genderResult = null;  // Avoid using the variable name `gender` which conflicts with the column name
+
+        String query = "SELECT " + gender + " FROM " + dbtable + " WHERE " + emailaddress + " = ?"; // Fixed email column reference
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            genderResult = cursor.getString(cursor.getColumnIndexOrThrow(gender)); // Retrieve gender value
+        }
+
+        if (cursor != null) {
+            cursor.close(); // Ensure the cursor is closed
+        }
+        db.close(); // Close the database connection
+        return genderResult;
+    }
+    public boolean updateUserProfile(users user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(name, user.getName());
+        values.put(emailaddress, user.getEmail());
+        values.put(gender, user.getGender());
+        values.put(age, user.getAge());
+        values.put(bio, user.getBio());
+
+        // Use email as the identifier for update
+        int rowsAffected = db.update(dbtable, values, emailaddress + " = ?", new String[]{user.getEmail()});
+        db.close();
+
+        // Return true if at least one row was updated, false otherwise
+        return rowsAffected > 0;
+    }
+
+
+
+
+
+
+
+
+
 
 
 

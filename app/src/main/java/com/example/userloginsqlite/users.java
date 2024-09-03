@@ -1,34 +1,51 @@
 package com.example.userloginsqlite;
 
 public class users {
-
     private int id;
-    private String firstname;
-    private String lastname;
-    private String emailaddress;
+    private String name;
+    private String email;
     private String password;
-    private String confirmpassword;
+    private String gender;
+    private int age;
+    private String bio;
 
-    // Constructor with ID
-    public users(int id, String firstname, String lastname, String emailaddress, String password, String confirmpassword) {
+    // Constructor for creating a new user (used during registration)
+    public users(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    // Constructor for updating a user (excludes id and password)
+    public users(String name, String email, String gender, int age, String bio) {
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+        this.age = age;
+        this.bio = bio;
+    }
+
+
+    // Constructor with all attributes
+    public users(int id, String name, String email, String password, String gender, int age, String bio) {
         this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.emailaddress = emailaddress;
+        this.name = name;
+        this.email = email;
         this.password = password;
-        this.confirmpassword = confirmpassword;
+        this.gender = gender;
+        this.age = age;
+        this.bio = bio;
+    }
+    public users(int id, String name, String email, String gender, int age, String bio){
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+        this.age = age;
+        this.bio = bio;
     }
 
-    // Constructor without ID (for registration)
-    public users(String firstname, String lastname, String emailaddress, String password, String confirmpassword) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.emailaddress = emailaddress;
-        this.password = password;
-        this.confirmpassword = confirmpassword;
-    }
-
-    // Getters and Setters
+    // Getters and setters for all attributes
     public int getId() {
         return id;
     }
@@ -37,43 +54,51 @@ public class users {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
-    }
-
-    public String getConfirmpassword() {
-        return confirmpassword;
-    }
-
-    public void setConfirmpassword(String confirmpassword) {
-        this.confirmpassword = confirmpassword;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getEmailaddress() {
-        return emailaddress;
+    public String getGender() {
+        return gender;
     }
 
-    public void setEmailaddress(String emailaddress) {
-        this.emailaddress = emailaddress;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getLastname() {
-        return lastname;
+    public int getAge() {
+        return age;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getBio() {
+        return bio;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

@@ -5,7 +5,7 @@
 
     <!-- Outline with a transparent color -->
     <stroke
-        android:width="2dp"
+        android:width="3dp"
         android:color="#673AB7" /> <!-- 50% transparent white color -->
 
     <!-- Rounded corners (optional) -->

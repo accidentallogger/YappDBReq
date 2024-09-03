@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.regex.Pattern;
 
 public class register extends AppCompatActivity {
-    TextView txtregister, txtfirstname, txtlastname, txtemail, txtpassword, txtcnfpassword, txt8charhint, txtDisplayInfoReg;
-    EditText ptfirstname, ptlastname, ptemail, ptpassword, ptcnfpassword;
+    TextView txtDisplayInfoReg;
+    EditText ptname, ptemail, ptpassword, ptcnfpassword;
     Button btnRegisterLog, btnLoginLog;
     dbConnect db;
 
@@ -25,17 +25,8 @@ public class register extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
 
-        txtregister = findViewById(R.id.txtregister);
-        txtfirstname = findViewById(R.id.txtfirstname);
-        txtlastname = findViewById(R.id.txtlastname);
-        txtemail = findViewById(R.id.txtemail);
-        txtpassword = findViewById(R.id.txtpassword);
-        txtcnfpassword = findViewById(R.id.txtcnfpassword);
-        txt8charhint = findViewById(R.id.txt8charhint);
         txtDisplayInfoReg = findViewById(R.id.txtDisplayInfoReg);
-
-        ptfirstname = findViewById(R.id.ptfirstname);
-        ptlastname = findViewById(R.id.ptlastname);
+        ptname = findViewById(R.id.ptname);
         ptemail = findViewById(R.id.ptemail);
         ptpassword = findViewById(R.id.ptpassword);
         ptcnfpassword = findViewById(R.id.ptcnfpassword);
@@ -50,13 +41,13 @@ public class register extends AppCompatActivity {
         });
 
         btnRegisterLog.setOnClickListener(view -> {
-            String strfirstname = ptfirstname.getText().toString();
-            String strlastname = ptlastname.getText().toString();
+            String strname = ptname.getText().toString();
             String stremail = ptemail.getText().toString();
             String strpassword = ptpassword.getText().toString();
             String strcnfpassword = ptcnfpassword.getText().toString();
 
-            if (strfirstname.isEmpty() || strlastname.isEmpty() || stremail.isEmpty() || strpassword.isEmpty() || strcnfpassword.isEmpty()) {
+            // Validate input fields
+            if (strname.isEmpty() || stremail.isEmpty() || strpassword.isEmpty() || strcnfpassword.isEmpty()) {
                 txtDisplayInfoReg.setText("ALL Fields required");
             } else if (strpassword.length() < 8) {
                 Toast.makeText(register.this, "Password must be at least 8 characters long", Toast.LENGTH_SHORT).show();
@@ -67,15 +58,20 @@ public class register extends AppCompatActivity {
             } else if (!isValidEmail(stremail)) {
                 Toast.makeText(register.this, "Invalid email format", Toast.LENGTH_SHORT).show();
             } else {
-                users newUser = new users(strfirstname, strlastname, stremail, strpassword, strcnfpassword);
+                // Create new user object without Id, as it's auto-generated in the database
+                users newUser = new users(strname, stremail, strpassword);
                 db.addUser(newUser);
-                Toast.makeText(register.this, "User registered successfully", Toast.LENGTH_SHORT).show();
-                // Clear input fields
-                ptfirstname.setText("");
-                ptlastname.setText("");
-                ptemail.setText("");
-                ptpassword.setText("");
-                ptcnfpassword.setText("");
+
+                // Get userId from the database after inserting the user
+                int userId = db.getUserIdByEmail(stremail);
+
+                // Transition to user profile setup
+                Intent intent = new Intent(register.this, user_profile_setup.class);
+                intent.putExtra("googleName", strname);
+                intent.putExtra("googleEmail", stremail);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+                finish();
             }
         });
     }
