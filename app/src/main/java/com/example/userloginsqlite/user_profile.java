@@ -74,7 +74,7 @@ public class user_profile extends AppCompatActivity {
 
         // Back button action
         backbutton.setOnClickListener(view -> {
-            Intent intent = new Intent(user_profile.this, Home_Page.class);
+            Intent intent = new Intent(user_profile.this, homepage.class);
             startActivity(intent);
             finish();
         });

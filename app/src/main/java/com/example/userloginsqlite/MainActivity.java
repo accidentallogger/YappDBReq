@@ -57,10 +57,8 @@ public class MainActivity extends ComponentActivity {
             greeting = "Good Morning!";
         } else if (hourOfDay >= 12 && hourOfDay < 17) {
             greeting = "Good Afternoon!";
-        } else if (hourOfDay >= 17 && hourOfDay < 21) {
+        }else {
             greeting = "Good Evening!";
-        } else {
-            greeting = "Good Night!";
         }
 
         txtgreeting.setText(greeting);

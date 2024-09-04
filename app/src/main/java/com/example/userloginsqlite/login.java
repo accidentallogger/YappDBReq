@@ -61,13 +61,16 @@ public class login extends AppCompatActivity {
 
                     // Login successful
                     Toast.makeText(login.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(login.this, Home_Page.class);
+
+                    Intent intent = new Intent(login.this, homepage.class);
                     startActivity(intent);
-                } else {
+                }
+                else {
                     // Invalid password
                     Toast.makeText(login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }
-            } else {
+            }
+            else {
                 // Email does not exist
                 Toast.makeText(login.this, "Email does not exist", Toast.LENGTH_SHORT).show();
             }

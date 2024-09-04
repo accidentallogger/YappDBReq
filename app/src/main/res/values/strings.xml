@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UserLoginSqlite</string>
+    <string name="app_name">UserLogin</string>
     <string name="home_desc">Home Icon</string>
     <string name="wardrobe_desc">Your Wardrobe Icon</string>
     <string name="work_desc">Work Arena Icon</string>
@@ -9,4 +9,25 @@
     <string name="work_text">Work</string>
     <string name="style_text">StyleHub</string>
     <string name="your_web_client_id">192660101523-c4kagnj9l8sjec7351m8vpre3cfg64b5.apps.googleusercontent.com</string>
+
+    <string-array name="upper_body_array">
+        <item>Shirt</item>
+        <item>T-shirt</item>
+        <item>Hoodie</item>
+        <item>Kurta</item>
+    </string-array>
+
+    <string-array name="lower_body_array">
+        <item>Pants</item>
+        <item>Shorts</item>
+        <item>Jeans</item>
+    </string-array>
+
+    <string-array name="accessory_array">
+        <item>Cap</item>
+        <item>Shoes</item>
+    </string-array>
+
+    <!-- Image Button Description -->
+    <string name="image_description">A good appearing upload button</string>
 </resources>

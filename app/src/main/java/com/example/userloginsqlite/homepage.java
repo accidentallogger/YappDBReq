@@ -1,7 +1,5 @@
 package com.example.userloginsqlite;
 
-// In Home_Page.java
-// In Home_Page.java
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,24 +7,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.activity.EdgeToEdge;
+import androidx.constraintlayout.widget.ConstraintLayout;  // Import ConstraintLayout
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Home_Page extends AppCompatActivity {
-    ImageView male_icon, female_icon, default_icon;
+public class homepage extends AppCompatActivity {
+    ImageView male_icon, female_icon, default_icon,home_icon,wardrobe_icon;
     dbConnect db;
-    LinearLayout container_profile,container_home,container_wardrobe,container_work,container_style;
-
+    ConstraintLayout container_profile;
+    LinearLayout container_home, container_wardrobe, container_work, container_style;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
 
+        wardrobe_icon = findViewById(R.id.icon_wardrobe);
+        home_icon = findViewById(R.id.icon_home);
         male_icon = findViewById(R.id.male_icon);
         female_icon = findViewById(R.id.female_icon);
         default_icon = findViewById(R.id.default_icon);
@@ -60,7 +58,17 @@ public class Home_Page extends AppCompatActivity {
                         female_icon.setVisibility(View.GONE);
                         default_icon.setVisibility(View.GONE);
                         break;
+                    case "m":
+                        male_icon.setVisibility(View.VISIBLE);
+                        female_icon.setVisibility(View.GONE);
+                        default_icon.setVisibility(View.GONE);
+                        break;
                     case "female":
+                        male_icon.setVisibility(View.GONE);
+                        female_icon.setVisibility(View.VISIBLE);
+                        default_icon.setVisibility(View.GONE);
+                        break;
+                    case "f":
                         male_icon.setVisibility(View.GONE);
                         female_icon.setVisibility(View.VISIBLE);
                         default_icon.setVisibility(View.GONE);
@@ -74,19 +82,19 @@ public class Home_Page extends AppCompatActivity {
             }
         }
 
-        container_wardrobe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Home_Page.this, wardrobe.class);
-                startActivity(i);
-            }
+        container_profile.setOnClickListener(view -> {
+            Intent i = new Intent(homepage.this, user_profile.class);
+            startActivity(i);
         });
 
+        home_icon.setOnClickListener(view -> {
+            Intent j = new Intent(homepage.this, homepage.class);
+            startActivity(j);
+        });
 
-
-        container_profile.setOnClickListener(view -> {
-            Intent i = new Intent(Home_Page.this, user_profile.class);
-            startActivity(i);
+        wardrobe_icon.setOnClickListener(view -> {
+            Intent k = new Intent(homepage.this, wardrobe.class);
+            startActivity(k);
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
